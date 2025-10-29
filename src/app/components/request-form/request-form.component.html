@@ -1,0 +1,293 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
+  <div class="container mx-auto px-4 max-w-3xl">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold flex items-center justify-center gap-3 text-blue-600 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" x2="8" y1="13" y2="13"/>
+          <line x1="16" x2="8" y1="17" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+        Solicitar Serviço
+      </h1>
+      <p class="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
+        Preencha o formulário abaixo para solicitar um serviço. Você receberá um comprovante com o protocolo de atendimento.
+      </p>
+    </div>
+
+    <div class="p-8 bg-white dark:bg-gray-800 rounded-lg border border-border shadow-lg">
+      <form [formGroup]="formulario" (ngSubmit)="onSubmit($event)" class="space-y-6">
+        <!-- Seleção de Serviço -->
+        <div>
+          <label class="block font-semibold mb-2">Serviço *</label>
+          <select
+            formControlName="servicoId"
+            (change)="selecionarServico()"
+            class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700"
+            [class.border-red-500]="campoInvalido('servicoId')"
+            [class.border-green-500]="!campoInvalido('servicoId') && formulario.get('servicoId')?.value"
+          >
+            <option value="">Selecione um serviço</option>
+            @for (servico of servicos; track servico.id) {
+              <option [value]="servico.id">{{ servico.nome }} - {{ formatarValor(servico.valor) }}</option>
+            }
+          </select>
+          @if (campoInvalido('servicoId')) {
+            <p class="text-red-500 text-sm mt-1">{{ obterErro('servicoId') }}</p>
+          }
+        </div>
+
+        @if (servicoSelecionado) {
+          <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <p class="text-sm text-blue-800 dark:text-blue-300"><strong>Descrição:</strong> {{ servicoSelecionado.descricao }}</p>
+            <p class="text-sm text-blue-800 dark:text-blue-300 mt-2"><strong>Valor:</strong> {{ formatarValor(servicoSelecionado.valor) }}</p>
+          </div>
+        }
+
+        <!-- Dados Pessoais -->
+        <hr class="border-t border-border" />
+        <h2 class="text-2xl font-semibold">Dados Pessoais</h2>
+
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold mb-2">Nome Completo *</label>
+            <input
+              type="text"
+              formControlName="nome"
+              placeholder="Digite seu nome completo"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700"
+              [class.border-red-500]="campoInvalido('nome')"
+              [class.border-green-500]="!campoInvalido('nome') && formulario.get('nome')?.value"
+            />
+            @if (campoInvalido('nome')) {
+              <p class="text-red-500 text-sm mt-1">{{ obterErro('nome') }}</p>
+            }
+          </div>
+
+          <div>
+            <label class="block font-semibold mb-2">RG *</label>
+            <input
+              type="text"
+              formControlName="rg"
+              placeholder="00.000.000-00"
+              (input)="formatarRG($event)"
+              maxlength="13"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700"
+              [class.border-red-500]="campoInvalido('rg')"
+              [class.border-green-500]="!campoInvalido('rg') && formulario.get('rg')?.value"
+            />
+            @if (campoInvalido('rg')) {
+              <p class="text-red-500 text-sm mt-1">{{ obterErro('rg') }}</p>
+            }
+          </div>
+
+          <div>
+            <label class="block font-semibold mb-2">CPF *</label>
+            <input
+              type="text"
+              formControlName="cpf"
+              placeholder="000.000.000-00"
+              (input)="formatarCPF($event)"
+              maxlength="14"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700"
+              [class.border-red-500]="campoInvalido('cpf')"
+              [class.border-green-500]="!campoInvalido('cpf') && formulario.get('cpf')?.value"
+            />
+            @if (campoInvalido('cpf')) {
+              <p class="text-red-500 text-sm mt-1">{{ obterErro('cpf') }}</p>
+            }
+          </div>
+
+          <div>
+            <label class="block font-semibold mb-2">Telefone *</label>
+            <input
+              type="tel"
+              formControlName="telefone"
+              placeholder="(00) 00000-0000"
+              (input)="formatarTelefone($event)"
+              maxlength="15"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700"
+              [class.border-red-500]="campoInvalido('telefone')"
+              [class.border-green-500]="!campoInvalido('telefone') && formulario.get('telefone')?.value"
+            />
+            @if (campoInvalido('telefone')) {
+              <p class="text-red-500 text-sm mt-1">{{ obterErro('telefone') }}</p>
+            }
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="block font-semibold mb-2">E-mail *</label>
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="seu@email.com"
+              (blur)="verificarEmail()"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700"
+              [class.border-red-500]="campoInvalido('email')"
+              [class.border-green-500]="!campoInvalido('email') && formulario.get('email')?.value"
+            />
+            @if (campoInvalido('email')) {
+              <p class="text-red-500 text-sm mt-1">{{ obterErro('email') }}</p>
+            }
+            @if (usuarioExistente && formulario.get('email')?.value) {
+              <p class="text-sm text-green-600 dark:text-green-400 mt-1">
+                ✓ E-mail já cadastrado. Você pode fazer login após a solicitação.
+              </p>
+            }
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="block font-semibold mb-2">Endereço Completo *</label>
+            <input
+              type="text"
+              formControlName="endereco"
+              placeholder="Rua, número, bairro, cidade - UF"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700"
+              [class.border-red-500]="campoInvalido('endereco')"
+              [class.border-green-500]="!campoInvalido('endereco') && formulario.get('endereco')?.value"
+            />
+            @if (campoInvalido('endereco')) {
+              <p class="text-red-500 text-sm mt-1">{{ obterErro('endereco') }}</p>
+            }
+          </div>
+        </div>
+
+        <!-- Pergunta de Segurança (só para novos usuários) -->
+        @if (!usuarioExistente && formulario.get('email')?.value) {
+          <hr class="border-t border-border" />
+          <h2 class="text-2xl font-semibold">Segurança da Conta</h2>
+          <p class="text-sm text-muted-foreground">
+            Como é seu primeiro acesso, configure uma pergunta de segurança para recuperar sua senha caso necessário.
+          </p>
+          
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="md:col-span-2">
+              <label class="block font-semibold mb-2">Pergunta de Segurança *</label>
+              <select
+                formControlName="perguntaSeguranca"
+                class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700"
+                [class.border-red-500]="campoInvalido('perguntaSeguranca')"
+                [class.border-green-500]="!campoInvalido('perguntaSeguranca') && formulario.get('perguntaSeguranca')?.value"
+              >
+                <option value="">Selecione uma pergunta</option>
+                <option value="Qual o nome do seu primeiro animal de estimação?">Qual o nome do seu primeiro animal de estimação?</option>
+                <option value="Qual o nome da sua mãe?">Qual o nome da sua mãe?</option>
+                <option value="Em que cidade você nasceu?">Em que cidade você nasceu?</option>
+                <option value="Qual o nome da sua escola primária?">Qual o nome da sua escola primária?</option>
+                <option value="Qual seu filme favorito?">Qual seu filme favorito?</option>
+                <option value="Qual o sobrenome de solteira da sua avó materna?">Qual o sobrenome de solteira da sua avó materna?</option>
+              </select>
+              @if (campoInvalido('perguntaSeguranca')) {
+                <p class="text-red-500 text-sm mt-1">{{ obterErro('perguntaSeguranca') }}</p>
+              }
+            </div>
+            
+            <div class="md:col-span-2">
+              <label class="block font-semibold mb-2">Resposta *</label>
+              <input
+                type="text"
+                formControlName="respostaSeguranca"
+                placeholder="Digite sua resposta"
+                class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700"
+                [class.border-red-500]="campoInvalido('respostaSeguranca')"
+                [class.border-green-500]="!campoInvalido('respostaSeguranca') && formulario.get('respostaSeguranca')?.value"
+              />
+              @if (campoInvalido('respostaSeguranca')) {
+                <p class="text-red-500 text-sm mt-1">{{ obterErro('respostaSeguranca') }}</p>
+              }
+              <p class="text-xs text-muted-foreground mt-1">
+                Esta resposta será usada para recuperar sua senha. Guarde-a em local seguro.
+              </p>
+            </div>
+          </div>
+        }
+
+        <!-- Campos Extras -->
+        @if (servicoSelecionado && servicoSelecionado.camposExtras.length > 0) {
+          <hr class="border-t border-border" />
+          <h2 class="text-2xl font-semibold">Informações Adicionais</h2>
+          <div class="grid md:grid-cols-2 gap-4">
+            @for (campo of servicoSelecionado.camposExtras; track campo) {
+              <div>
+                <label class="block font-semibold mb-2">{{ campo }} *</label>
+                <input
+                  type="text"
+                  [formControlName]="'extra_' + campo"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700"
+                  [class.border-red-500]="campoInvalido('extra_' + campo)"
+                  [class.border-green-500]="!campoInvalido('extra_' + campo) && formulario.get('extra_' + campo)?.value"
+                />
+                @if (campoInvalido('extra_' + campo)) {
+                  <p class="text-red-500 text-sm mt-1">{{ obterErro('extra_' + campo) }}</p>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Pagamento -->
+        <hr class="border-t border-border" />
+        <h2 class="text-2xl font-semibold">Pagamento</h2>
+
+        <div>
+          <label class="block font-semibold mb-2">Forma de Pagamento *</label>
+          <select
+            formControlName="formaPagamento"
+            class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700"
+            [class.border-red-500]="campoInvalido('formaPagamento')"
+            [class.border-green-500]="!campoInvalido('formaPagamento') && formulario.get('formaPagamento')?.value"
+          >
+            <option value="">Selecione</option>
+            <option value="PIX">PIX</option>
+            <option value="Cartão de Crédito">Cartão de Crédito</option>
+            <option value="Cartão de Débito">Cartão de Débito</option>
+            <option value="Boleto">Boleto</option>
+          </select>
+          @if (campoInvalido('formaPagamento')) {
+            <p class="text-red-500 text-sm mt-1">{{ obterErro('formaPagamento') }}</p>
+          }
+        </div>
+
+        <button
+          type="button"
+          (click)="gerarPagamentoFalso()"
+          class="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md transition-colors"
+        >
+          Simular Pagamento
+        </button>
+
+        @if (pagamentoGerado) {
+          <div class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+            <pre class="text-xs text-green-800 dark:text-green-300 whitespace-pre-wrap">{{ comprovanteFalso }}</pre>
+          </div>
+        }
+
+        <!-- Upload de Documentos -->
+        <hr class="border-t border-border" />
+        <h2 class="text-2xl font-semibold">Documentos</h2>
+
+        <div>
+          <label class="block font-semibold mb-2">Anexar Documentos (opcional)</label>
+          <input
+            type="file"
+            (change)="onArquivoSelecionado($event)"
+            multiple
+            class="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700"
+          />
+          @if (arquivos.length > 0) {
+            <p class="text-sm text-muted-foreground mt-2">{{ arquivos.length }} arquivo(s) selecionado(s)</p>
+          }
+        </div>
+
+        <!-- Botão de Envio -->
+        <button
+          type="submit"
+          class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition-colors"
+        >
+          Enviar Solicitação
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

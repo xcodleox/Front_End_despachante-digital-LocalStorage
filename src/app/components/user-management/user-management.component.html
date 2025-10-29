@@ -1,0 +1,332 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+  <div class="container mx-auto px-4">
+    <!-- Header -->
+    <div class="mb-8">
+      <h2 class="flex items-center gap-3 text-blue-600 dark:text-blue-400 mb-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        Gerenciamento de Usuários
+      </h2>
+      <p class="text-muted-foreground">Gerencie todos os usuários do sistema</p>
+    </div>
+
+    <!-- Botão Criar Novo Usuário -->
+    <div class="mb-6">
+      <button
+        (click)="abrirDialogNovo()"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <line x1="19" x2="19" y1="8" y2="14"></line>
+          <line x1="22" x2="16" y1="11" y2="11"></line>
+        </svg>
+        Criar Novo Usuário
+      </button>
+    </div>
+
+    <!-- Cards de Usuários -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      @for (usuario of usuarios; track usuario.id) {
+        <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-border shadow-lg">
+          <div class="flex items-start gap-4 mb-4">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+                 [class]="usuario.tipo === 'admin' ? 'bg-purple-100 dark:bg-purple-900/30' : 'bg-blue-100 dark:bg-blue-900/30'">
+              @if (usuario.tipo === 'admin') {
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-600 dark:text-purple-400">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                </svg>
+              } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600 dark:text-blue-400">
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              }
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="mb-1 truncate">{{ usuario.nome }}</h3>
+              <span [class]="'inline-block px-2 py-1 rounded text-xs font-semibold mb-2 ' + getTipoBadgeClass(usuario.tipo)">
+                {{ usuario.tipo === 'admin' ? 'Administrador' : 'Usuário' }}
+              </span>
+            </div>
+          </div>
+
+          <div class="space-y-2 mb-4 text-sm">
+            <div class="flex items-center gap-2 text-muted-foreground">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              </svg>
+              <span class="truncate">{{ usuario.email }}</span>
+            </div>
+            <div class="flex items-center gap-2 text-muted-foreground">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 11 4 6l5-5 5 5-4 5Z"></path>
+                <path d="M13 21h7"></path>
+                <path d="M17 17v4"></path>
+                <path d="M17 2V21"></path>
+              </svg>
+              {{ contarSolicitacoes(usuario.email) }} solicitações
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <button
+              (click)="editarUsuario(usuario)"
+              class="flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-input rounded-lg hover:bg-accent transition-colors text-sm"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
+                <path d="m15 5 4 4"></path>
+              </svg>
+              Editar
+            </button>
+            <button
+              (click)="alterarSenha(usuario)"
+              class="px-3 py-2 border border-input rounded-lg hover:bg-accent transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="7.5" cy="15.5" r="5.5"></circle>
+                <path d="m21 2-9.6 9.6"></path>
+                <path d="m15.5 7.5 3 3L22 7l-3-3"></path>
+              </svg>
+            </button>
+            <button
+              (click)="deletarUsuario(usuario)"
+              class="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6h18"></path>
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Botão Voltar -->
+    <div class="text-center">
+      <button
+        (click)="voltar()"
+        class="inline-flex items-center gap-2 px-6 py-3 border border-input bg-background rounded-lg hover:bg-accent transition-colors"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 19-7-7 7-7"></path>
+          <path d="M19 12H5"></path>
+        </svg>
+        Voltar para Painel
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Dialog Criar Novo Usuário -->
+@if (mostrarDialogNovo) {
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" (click)="mostrarDialogNovo = false">
+    <div class="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6" (click)="$event.stopPropagation()">
+      <h3 class="flex items-center gap-2 mb-4 text-xl font-semibold">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <line x1="19" x2="19" y1="8" y2="14"></line>
+          <line x1="22" x2="16" y1="11" y2="11"></line>
+        </svg>
+        Criar Novo Usuário
+      </h3>
+      <p class="text-sm text-muted-foreground mb-4">Preencha os dados do novo usuário</p>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-2">Nome Completo</label>
+          <input
+            type="text"
+            [(ngModel)]="novoUsuarioForm.nome"
+            placeholder="Nome completo"
+            class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2">E-mail</label>
+          <input
+            type="email"
+            [(ngModel)]="novoUsuarioForm.email"
+            placeholder="email@exemplo.com"
+            class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2">Senha</label>
+          <input
+            type="password"
+            [(ngModel)]="novoUsuarioForm.senha"
+            placeholder="Mínimo 6 caracteres"
+            class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2">Confirmar Senha</label>
+          <input
+            type="password"
+            [(ngModel)]="novoUsuarioForm.confirmarSenha"
+            placeholder="Repita a senha"
+            class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2">Tipo de Usuário</label>
+          <select
+            [(ngModel)]="novoUsuarioForm.tipo"
+            class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground"
+          >
+            <option value="user">Usuário</option>
+            <option value="admin">Administrador</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex gap-2 mt-6">
+        <button
+          (click)="mostrarDialogNovo = false"
+          class="flex-1 px-4 py-2 border border-input rounded-lg hover:bg-accent transition-colors"
+        >
+          Cancelar
+        </button>
+        <button
+          (click)="criarNovoUsuario()"
+          class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Criar Usuário
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Dialog Editar Usuário -->
+@if (mostrarDialogEditar) {
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" (click)="mostrarDialogEditar = false">
+    <div class="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6" (click)="$event.stopPropagation()">
+      <h3 class="flex items-center gap-2 mb-4 text-xl font-semibold">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
+          <path d="m15 5 4 4"></path>
+        </svg>
+        Editar Usuário
+      </h3>
+      <p class="text-sm text-muted-foreground mb-4">Atualize as informações do usuário {{ usuarioSelecionado?.nome }}</p>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-2">Nome</label>
+          <input
+            type="text"
+            [(ngModel)]="form.nome"
+            placeholder="Nome completo"
+            class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2">E-mail</label>
+          <input
+            type="email"
+            [(ngModel)]="form.email"
+            placeholder="email@exemplo.com"
+            class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2">Tipo de Usuário</label>
+          <select
+            [(ngModel)]="form.tipo"
+            class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground"
+          >
+            <option value="user">Usuário</option>
+            <option value="admin">Administrador</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex gap-2 mt-6">
+        <button
+          (click)="mostrarDialogEditar = false"
+          class="flex-1 px-4 py-2 border border-input rounded-lg hover:bg-accent transition-colors"
+        >
+          Cancelar
+        </button>
+        <button
+          (click)="salvarEdicao()"
+          class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Salvar Alterações
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Dialog Alterar Senha -->
+@if (mostrarDialogSenha) {
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" (click)="mostrarDialogSenha = false">
+    <div class="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6" (click)="$event.stopPropagation()">
+      <h3 class="flex items-center gap-2 mb-4 text-xl font-semibold">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="7.5" cy="15.5" r="5.5"></circle>
+          <path d="m21 2-9.6 9.6"></path>
+          <path d="m15.5 7.5 3 3L22 7l-3-3"></path>
+        </svg>
+        Alterar Senha
+      </h3>
+      <p class="text-sm text-muted-foreground mb-4">Defina uma nova senha para {{ usuarioSelecionado?.nome }}</p>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-2">Nova Senha</label>
+          <input
+            type="password"
+            [(ngModel)]="form.senha"
+            placeholder="Digite a nova senha"
+            class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2">Confirmar Senha</label>
+          <input
+            type="password"
+            [(ngModel)]="form.confirmarSenha"
+            placeholder="Confirme a nova senha"
+            class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground"
+          />
+        </div>
+      </div>
+
+      <div class="flex gap-2 mt-6">
+        <button
+          (click)="mostrarDialogSenha = false"
+          class="flex-1 px-4 py-2 border border-input rounded-lg hover:bg-accent transition-colors"
+        >
+          Cancelar
+        </button>
+        <button
+          (click)="salvarSenha()"
+          class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+}

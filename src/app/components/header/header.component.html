@@ -1,0 +1,169 @@
+<header class="bg-white shadow-md sticky top-0 z-50">
+  <div class="container mx-auto px-4">
+    <nav class="flex items-center justify-between py-4 relative">
+      <!-- Mobile Menu Toggle -->
+      <button
+        (click)="toggleMenu()"
+        class="lg:hidden p-2 hover:bg-gray-100 rounded-md"
+        [attr.aria-label]="'Toggle menu'"
+      >
+        @if (menuOpen()) {
+          <lucide-angular [img]="icons.X" [size]="24" />
+        } @else {
+          <lucide-angular [img]="icons.Menu" [size]="24" />
+        }
+      </button>
+
+      <!-- Left Navigation - Desktop -->
+      <ul class="hidden lg:flex items-center gap-6 flex-1">
+        <li>
+          <button
+            (click)="handleNavigation('home')"
+            [class]="'flex items-center gap-2 px-4 py-2 rounded-md transition-colors ' + 
+              (currentSection() === 'home' ? 'bg-primary text-primary-foreground' : 'hover:bg-gray-100')"
+          >
+            <lucide-angular [img]="icons.Home" [size]="18" />
+            <span>Home</span>
+          </button>
+        </li>
+        <li>
+          <button
+            (click)="handleNavigation('servicos')"
+            [class]="'flex items-center gap-2 px-4 py-2 rounded-md transition-colors ' + 
+              (currentSection() === 'servicos' ? 'bg-primary text-primary-foreground' : 'hover:bg-gray-100')"
+          >
+            <lucide-angular [img]="icons.ListChecks" [size]="18" />
+            <span>Serviços</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- Logo Central -->
+      <div class="flex-1 lg:flex-initial flex justify-center lg:justify-start lg:mx-8">
+        <button (click)="handleNavigation('home')" class="text-center">
+          <h1 class="text-primary">
+            Despachante<span class="text-blue-600">Digital</span>
+          </h1>
+          <p class="text-xs text-muted-foreground hidden lg:block">
+            Conectando quem precisa com quem ajuda!
+          </p>
+        </button>
+      </div>
+
+      <!-- Right Navigation - Desktop -->
+      <ul class="hidden lg:flex items-center gap-4 flex-1 justify-end">
+        <li>
+          <button
+            (click)="handleNavigation('formulario')"
+            class="flex items-center gap-2 px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
+          >
+            <lucide-angular [img]="icons.FolderOpen" [size]="18" />
+            <span>Solicitações</span>
+          </button>
+        </li>
+
+        @if (!isLoggedIn()) {
+          <li>
+            <button 
+              (click)="handleLogin()" 
+              class="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-md transition-colors"
+            >
+              <lucide-angular [img]="icons.LogIn" [size]="18" />
+              <span>Login</span>
+            </button>
+          </li>
+        } @else {
+          <li>
+            <button
+              (click)="handleNavigation('admin')"
+              class="flex items-center gap-2 px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
+            >
+              <lucide-angular [img]="icons.User" [size]="18" />
+              <span>Painel</span>
+            </button>
+          </li>
+          <li>
+            <button
+              (click)="handleLogout()"
+              class="flex items-center gap-2 px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
+            >
+              <lucide-angular [img]="icons.LogOut" [size]="18" />
+              <span>Sair</span>
+            </button>
+          </li>
+        }
+      </ul>
+
+      <!-- Mobile Menu Button Placeholder (right side) -->
+      <div class="lg:hidden w-10"></div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    @if (menuOpen()) {
+      <div class="lg:hidden bg-white border-t border-border pb-4">
+        <ul class="flex flex-col gap-2 pt-4">
+          <li>
+            <button
+              (click)="handleNavigation('home')"
+              [class]="'w-full flex items-center gap-3 px-4 py-3 rounded-md transition-colors ' + 
+                (currentSection() === 'home' ? 'bg-primary text-primary-foreground' : 'hover:bg-gray-100')"
+            >
+              <lucide-angular [img]="icons.Home" [size]="18" />
+              <span>Home</span>
+            </button>
+          </li>
+          <li>
+            <button
+              (click)="handleNavigation('servicos')"
+              [class]="'w-full flex items-center gap-3 px-4 py-3 rounded-md transition-colors ' + 
+                (currentSection() === 'servicos' ? 'bg-primary text-primary-foreground' : 'hover:bg-gray-100')"
+            >
+              <lucide-angular [img]="icons.ListChecks" [size]="18" />
+              <span>Serviços</span>
+            </button>
+          </li>
+          <li>
+            <button
+              (click)="handleNavigation('formulario')"
+              class="w-full flex items-center gap-3 justify-start px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
+            >
+              <lucide-angular [img]="icons.FolderOpen" [size]="18" />
+              <span>Solicitações</span>
+            </button>
+          </li>
+
+          @if (!isLoggedIn()) {
+            <li>
+              <button 
+                (click)="handleLogin()" 
+                class="w-full flex items-center gap-3 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-md transition-colors"
+              >
+                <lucide-angular [img]="icons.LogIn" [size]="18" />
+                <span>Login</span>
+              </button>
+            </li>
+          } @else {
+            <li>
+              <button
+                (click)="handleNavigation('admin')"
+                class="w-full flex items-center gap-3 justify-start px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
+              >
+                <lucide-angular [img]="icons.User" [size]="18" />
+                <span>Painel</span>
+              </button>
+            </li>
+            <li>
+              <button
+                (click)="handleLogout()"
+                class="w-full flex items-center gap-3 justify-start px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
+              >
+                <lucide-angular [img]="icons.LogOut" [size]="18" />
+                <span>Sair</span>
+              </button>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+</header>

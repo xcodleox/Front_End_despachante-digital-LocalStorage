@@ -1,0 +1,128 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
+  <div class="container mx-auto px-4">
+    <div class="max-w-6xl mx-auto">
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+          <h1 class="text-3xl md:text-4xl font-bold">Painel Administrativo</h1>
+          <p class="text-muted-foreground">Bem-vindo, <strong>{{ adminNome }}</strong></p>
+        </div>
+        <button
+          (click)="logout()"
+          class="py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md transition-colors flex items-center gap-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" x2="9" y1="12" y2="12"/>
+          </svg>
+          Sair
+        </button>
+      </div>
+
+      <!-- Estatísticas -->
+      <div class="grid md:grid-cols-3 gap-6 mb-8">
+        <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-border shadow-lg">
+          <div class="flex items-center gap-4">
+            <div class="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm text-muted-foreground">Total de Solicitações</p>
+              <p class="text-3xl font-bold">{{ totalSolicitacoes }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-border shadow-lg">
+          <div class="flex items-center gap-4">
+            <div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm text-muted-foreground">Total de Usuários</p>
+              <p class="text-3xl font-bold">{{ totalUsuarios }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-border shadow-lg">
+          <div class="flex items-center gap-4">
+            <div class="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-600">
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm text-muted-foreground">Total de Serviços</p>
+              <p class="text-3xl font-bold">{{ totalServicos }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ações Rápidas -->
+      <h2 class="text-2xl font-semibold mb-6">Ações Rápidas</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <button
+          (click)="abrirGerenciamentoSolicitacoes()"
+          class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-border shadow-lg hover:shadow-xl transition-shadow text-left"
+        >
+          <div class="flex items-center gap-4 mb-4">
+            <div class="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold">Gerenciar Solicitações</h3>
+          </div>
+          <p class="text-muted-foreground">Visualize e gerencie todas as solicitações de serviços</p>
+        </button>
+
+        <button
+          (click)="abrirGerenciamentoUsuarios()"
+          class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-border shadow-lg hover:shadow-xl transition-shadow text-left"
+        >
+          <div class="flex items-center gap-4 mb-4">
+            <div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold">Gerenciar Usuários</h3>
+          </div>
+          <p class="text-muted-foreground">Visualize e gerencie todos os usuários do sistema</p>
+        </button>
+
+        <button
+          (click)="abrirGerenciamentoServicos()"
+          class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-border shadow-lg hover:shadow-xl transition-shadow text-left"
+        >
+          <div class="flex items-center gap-4 mb-4">
+            <div class="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-600">
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold">Gerenciar Serviços</h3>
+          </div>
+          <p class="text-muted-foreground">Adicione, edite ou remova serviços oferecidos</p>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

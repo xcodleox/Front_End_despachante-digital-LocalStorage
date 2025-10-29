@@ -1,0 +1,249 @@
+/* Header Container */
+:host {
+  display: block;
+}
+
+/* Logo Animation */
+.logo-link {
+  transition: transform 0.3s ease;
+}
+
+.logo-link:hover {
+  transform: scale(1.05);
+}
+
+.logo-link:active {
+  transform: scale(0.98);
+}
+
+/* Navigation Links */
+nav a {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+nav a:active {
+  transform: scale(0.98);
+}
+
+/* Mobile Menu Button */
+button[aria-label="Abrir menu"] {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+button[aria-label="Abrir menu"]:hover {
+  background: rgba(59, 130, 246, 0.1);
+  transform: scale(1.05);
+}
+
+button[aria-label="Abrir menu"]:active {
+  transform: scale(0.95);
+}
+
+button[aria-label="Abrir menu"] svg {
+  transition: transform 0.3s ease;
+}
+
+button[aria-label="Abrir menu"]:hover svg {
+  transform: rotate(90deg);
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Mobile Menu Panel */
+.mobile-menu-panel {
+  animation: slideInRight 0.3s ease;
+  border-left: 2px solid rgba(59, 130, 246, 0.3);
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Mobile Menu Close Button */
+.mobile-close-button {
+  transition: all 0.3s ease;
+}
+
+.mobile-close-button:hover {
+  background: rgba(239, 68, 68, 0.1);
+  transform: rotate(90deg) scale(1.1);
+}
+
+.mobile-close-button:active {
+  transform: rotate(90deg) scale(0.95);
+}
+
+/* Mobile Menu Links */
+.mobile-menu-link {
+  position: relative;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.mobile-menu-link:hover {
+  background: rgba(59, 130, 246, 0.1);
+  border-left-color: #3b82f6;
+  padding-left: 1.25rem;
+}
+
+.mobile-menu-link:active {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+/* User Menu Button */
+.user-menu-button {
+  position: relative;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.user-menu-button:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+.user-menu-button:active {
+  transform: scale(0.98);
+}
+
+/* Auth Buttons */
+.auth-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 2px solid;
+}
+
+.auth-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.auth-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.auth-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.auth-button:active {
+  transform: translateY(0);
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  animation: dropdownFadeIn 0.2s ease;
+  border: 2px solid rgba(59, 130, 246, 0.2);
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-menu-item {
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.dropdown-menu-item:hover {
+  background: rgba(59, 130, 246, 0.1);
+  border-left-color: #3b82f6;
+  padding-left: 1rem;
+}
+
+.dropdown-menu-item:active {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+/* Scroll Effect */
+:host(.scrolled) {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Dark Mode Adjustments */
+:host-context(.dark) nav a::after {
+  background: linear-gradient(90deg, #60a5fa, #a78bfa);
+}
+
+:host-context(.dark) .mobile-menu-panel {
+  border-left-color: rgba(96, 165, 250, 0.3);
+}
+
+:host-context(.dark) .dropdown-menu {
+  border-color: rgba(96, 165, 250, 0.2);
+}
+
+/* Accessibility */
+nav a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Smooth Transitions */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  nav a::after {
+    display: none;
+  }
+}

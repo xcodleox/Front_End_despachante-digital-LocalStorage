@@ -1,0 +1,120 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
+  <div class="container mx-auto px-4 max-w-2xl">
+    @if (data) {
+      <div class="bg-white dark:bg-gray-800 rounded-lg border border-border shadow-lg p-8">
+        <div class="text-center mb-8">
+          <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <path d="m9 11 3 3L22 4"/>
+            </svg>
+          </div>
+          <h1 class="text-3xl md:text-4xl font-bold text-green-600 mb-2">Solicitação Enviada!</h1>
+          <p class="text-muted-foreground">Seu protocolo de atendimento foi gerado</p>
+        </div>
+
+        <div class="space-y-4 mb-8">
+          <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <p class="text-sm text-muted-foreground">Protocolo</p>
+            <p class="text-2xl font-bold text-blue-600">{{ data.protocolo }}</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <p class="text-sm text-muted-foreground">Data e Hora</p>
+              <p class="font-semibold">{{ data.data }}</p>
+            </div>
+
+            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <p class="text-sm text-muted-foreground">Serviço</p>
+              <p class="font-semibold">{{ data.servico }}</p>
+            </div>
+
+            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <p class="text-sm text-muted-foreground">Valor</p>
+              <p class="font-semibold text-blue-600">{{ formatarValor(data.valor) }}</p>
+            </div>
+
+            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <p class="text-sm text-muted-foreground">Forma de Pagamento</p>
+              <p class="font-semibold">{{ data.formaPagamento }}</p>
+            </div>
+          </div>
+
+          <hr class="border-t border-border" />
+
+          <div>
+            <h2 class="text-xl font-semibold mb-4">Dados do Solicitante</h2>
+            <div class="space-y-2">
+              <p><strong>Nome:</strong> {{ data.solicitante }}</p>
+              <p><strong>E-mail:</strong> {{ data.email }}</p>
+              <p><strong>Telefone:</strong> {{ data.telefone }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <button
+            (click)="imprimir()"
+            class="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition-colors flex items-center justify-center gap-2"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 6 2 18 2 18 9"/>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+              <rect width="12" height="8" x="6" y="14"/>
+            </svg>
+            Imprimir Comprovante
+          </button>
+          <button
+            (click)="voltarParaHome()"
+            class="flex-1 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-md transition-colors"
+          >
+            Voltar para Início
+          </button>
+        </div>
+
+        <!-- Credenciais de Novo Usuário -->
+        @if (data.usuarioNovo && data.senhaGerada) {
+          <div class="mt-6 p-6 bg-green-50 dark:bg-green-900/20 rounded-lg border-2 border-green-500 dark:border-green-700">
+            <div class="flex items-start gap-3 mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600 dark:text-green-400 flex-shrink-0">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+              </svg>
+              <div class="flex-1">
+                <h3 class="font-semibold text-green-800 dark:text-green-300 mb-2">Conta Criada com Sucesso!</h3>
+                <p class="text-sm text-green-700 dark:text-green-400 mb-4">
+                  Uma nova conta foi criada para você. Use estas credenciais para fazer login:
+                </p>
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-md border border-green-300 dark:border-green-600">
+                  <p class="mb-2">
+                    <strong class="text-green-800 dark:text-green-300">E-mail:</strong> 
+                    <span class="ml-2 font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">{{ data.email }}</span>
+                  </p>
+                  <p>
+                    <strong class="text-green-800 dark:text-green-300">Senha:</strong> 
+                    <span class="ml-2 font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-lg">{{ data.senhaGerada }}</span>
+                  </p>
+                </div>
+                <p class="text-xs text-green-600 dark:text-green-400 mt-3">
+                  ⚠️ <strong>IMPORTANTE:</strong> Anote ou copie esta senha agora! Ela não será exibida novamente.
+                  Você pode alterar sua senha após fazer login.
+                </p>
+              </div>
+            </div>
+          </div>
+        }
+
+        <div class="mt-8 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+          <p class="text-sm text-yellow-800 dark:text-yellow-300">
+            <strong>Importante:</strong> Guarde este protocolo para acompanhar sua solicitação.
+            Você receberá atualizações por e-mail.
+            @if (data.usuarioNovo) {
+              <br/><br/>
+              Faça login em sua conta para acompanhar o status da solicitação em tempo real.
+            }
+          </p>
+        </div>
+      </div>
+    }
+  </div>
+</div>

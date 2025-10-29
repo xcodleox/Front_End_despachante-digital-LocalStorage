@@ -1,0 +1,24 @@
+<button
+  (click)="toggleTheme()"
+  class="fixed bottom-24 right-6 z-40 bg-gradient-to-br from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white w-14 h-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-110 backdrop-blur-sm border-2 border-white/20"
+  [attr.aria-label]="ariaLabel"
+  [attr.title]="ariaLabel"
+>
+  <div class="relative w-6 h-6">
+    @if (themeService.isLightTheme()) {
+      <lucide-angular 
+        [img]="icons.Sun" 
+        [size]="24" 
+        [strokeWidth]="2.5"
+        class="transition-all duration-300 animate-in spin-in-180"
+      />
+    } @else {
+      <lucide-angular 
+        [img]="icons.Moon" 
+        [size]="24" 
+        [strokeWidth]="2.5"
+        class="transition-all duration-300 animate-in spin-in-180"
+      />
+    }
+  </div>
+</button>

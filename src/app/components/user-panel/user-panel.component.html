@@ -1,0 +1,184 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
+  <div class="container mx-auto px-4">
+    <div class="max-w-6xl mx-auto">
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+          <h1 class="text-3xl md:text-4xl font-bold">Minhas Solicitações</h1>
+          <p class="text-muted-foreground">Bem-vindo, <strong>{{ usuarioNome }}</strong></p>
+        </div>
+        <button
+          (click)="logout()"
+          class="py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md transition-colors flex items-center gap-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" x2="9" y1="12" y2="12"/>
+          </svg>
+          Sair
+        </button>
+      </div>
+
+      <!-- Solicitações -->
+      @if (solicitacoes.length > 0) {
+        <div class="grid gap-6">
+          @for (solicitacao of solicitacoes; track solicitacao.id) {
+            <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-border shadow-lg">
+              <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+                <div>
+                  <h3 class="text-xl font-semibold">{{ solicitacao.servico?.nome || 'Serviço não encontrado' }}</h3>
+                  <p class="text-sm text-muted-foreground">Protocolo: <strong>{{ solicitacao.protocolo }}</strong></p>
+                </div>
+                <span [class]="'px-3 py-1 rounded-full text-sm font-semibold ' + getStatusBadgeClass(solicitacao.status)">
+                  {{ solicitacao.status }}
+                </span>
+              </div>
+
+              <div class="grid md:grid-cols-3 gap-4 text-sm">
+                <div>
+                  <p class="text-muted-foreground">Data</p>
+                  <p class="font-semibold">{{ solicitacao.data }}</p>
+                </div>
+                <div>
+                  <p class="text-muted-foreground">Valor</p>
+                  <p class="font-semibold text-blue-600">{{ solicitacao.servico ? formatarValor(solicitacao.servico.valor) : 'N/A' }}</p>
+                </div>
+                <div>
+                  <p class="text-muted-foreground">Pagamento</p>
+                  <p class="font-semibold">{{ solicitacao.dados.formaPagamento }}</p>
+                </div>
+              </div>
+
+              @if (solicitacao.observacao) {
+                <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <p class="text-sm text-blue-800 dark:text-blue-300">
+                    <strong>Observação:</strong> {{ solicitacao.observacao }}
+                  </p>
+                </div>
+              }
+
+              <!-- Chat da Solicitação -->
+              <div class="border-t border-border my-6"></div>
+              <div>
+                <h4 class="flex items-center gap-2 mb-4 text-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
+                  </svg>
+                  Mensagens
+                </h4>
+
+                <!-- Mensagens -->
+                <div class="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4 mb-4 max-h-96 overflow-y-auto space-y-3">
+                  @if (getChat(solicitacao).length === 0) {
+                    <div class="text-center text-muted-foreground py-6">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-2 opacity-50">
+                        <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
+                      </svg>
+                      <p class="text-sm">Nenhuma mensagem ainda. Inicie uma conversa!</p>
+                    </div>
+                  }
+                  @for (m of getChat(solicitacao); track m.id) {
+                    <div [class]="'p-3 rounded-lg ' + (m.remetente === 'user' ? 'bg-blue-100 dark:bg-blue-900/30 ml-auto max-w-[80%]' : 'bg-white dark:bg-gray-800 mr-auto max-w-[80%] border border-border')">
+                      <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600">
+                          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span class="text-xs font-medium">
+                          {{ m.remetente === 'user' ? 'Você' : 'Administrador' }}
+                        </span>
+                      </div>
+                      <p class="text-sm mb-1">{{ m.texto }}</p>
+                      @if (m.arquivos && m.arquivos.length > 0) {
+                        <div class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                          <p class="text-xs flex items-center gap-1 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                            </svg>
+                            Arquivos:
+                          </p>
+                          <div class="flex flex-wrap gap-2">
+                            @for (arq of m.arquivos; track arq) {
+                              <span class="text-xs text-blue-600 flex items-center gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
+                                  <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+                                </svg>
+                                {{ arq }}
+                              </span>
+                            }
+                          </div>
+                        </div>
+                      }
+                      <small class="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        {{ m.data }}
+                      </small>
+                    </div>
+                  }
+                </div>
+
+                <!-- Nova Mensagem -->
+                <div class="space-y-2">
+                  <textarea
+                    [(ngModel)]="chatMensagens[solicitacao.id]"
+                    placeholder="Digite sua mensagem..."
+                    rows="3"
+                    class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800"
+                  ></textarea>
+                  <div class="flex flex-wrap gap-2">
+                    <label class="flex-1 cursor-pointer">
+                      <span class="inline-flex items-center justify-center gap-2 w-full px-4 py-2 border border-border bg-background rounded-md hover:bg-accent transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                        </svg>
+                        Anexar Arquivo
+                      </span>
+                      <input
+                        type="file"
+                        multiple
+                        class="hidden"
+                        (change)="selecionarArquivo($event, solicitacao)"
+                      />
+                    </label>
+                    <button
+                      (click)="enviarMensagem(solicitacao)"
+                      class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors flex items-center gap-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m22 2-7 20-4-9-9-4Z"></path>
+                        <path d="M22 2 11 13"></path>
+                      </svg>
+                      Enviar
+                    </button>
+                  </div>
+                  @if (getArquivosSelecionadosCount(solicitacao.id) > 0) {
+                    <div class="text-sm text-muted-foreground">
+                      {{ getArquivosSelecionadosCount(solicitacao.id) }} arquivo(s) selecionado(s)
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="text-center py-12">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-gray-400">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          <h2 class="text-2xl font-semibold mb-2">Nenhuma solicitação encontrada</h2>
+          <p class="text-muted-foreground mb-6">Você ainda não fez nenhuma solicitação de serviço.</p>
+          <a href="/solicitacoes" class="inline-block py-2 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition-colors">
+            Fazer Nova Solicitação
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+</div>

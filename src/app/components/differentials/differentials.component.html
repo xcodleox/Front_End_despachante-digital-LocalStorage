@@ -1,0 +1,19 @@
+<section class="py-16 md:py-24 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">
+      Por que escolher o Despachante Digital?
+    </h2>
+    
+    <ul class="max-w-3xl mx-auto space-y-6">
+      @for (item of differentials; track $index) {
+        <li class="flex items-start gap-4 hover:scale-105 transition-transform">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-1 text-white">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <path d="m9 11 3 3L22 4"/>
+          </svg>
+          <span class="text-base md:text-lg leading-relaxed">{{ item }}</span>
+        </li>
+      }
+    </ul>
+  </div>
+</section>

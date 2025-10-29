@@ -1,0 +1,11 @@
+[build]
+  command = "ng build"
+  publish = "dist/despachante-digital/browser"
+
+[context.production.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

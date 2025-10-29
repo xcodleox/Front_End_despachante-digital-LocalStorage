@@ -1,0 +1,306 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+  <div class="container mx-auto px-4">
+    <!-- Header -->
+    <div class="mb-8">
+      <h2 class="flex items-center gap-3 text-blue-600 dark:text-blue-400 mb-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 16v-4"></path>
+          <path d="M12 8h.01"></path>
+        </svg>
+        Gerenciamento de Serviços
+      </h2>
+      <p class="text-muted-foreground">Gerencie todos os serviços oferecidos pelo despachante</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-6">
+      <!-- CADASTRAR NOVO SERVIÇO -->
+      <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-border shadow-lg">
+        <h3 class="flex items-center gap-2 mb-4 text-blue-600 dark:text-blue-400">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 8v8"></path>
+            <path d="M8 12h8"></path>
+          </svg>
+          Cadastrar Novo Serviço
+        </h3>
+
+        <div class="space-y-4">
+          <!-- Nome -->
+          <div>
+            <label class="block text-sm font-medium mb-2">Nome do Serviço *</label>
+            <input
+              type="text"
+              [(ngModel)]="novoServico.nome"
+              placeholder="Ex: Transferência de Veículos"
+              class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground"
+            />
+          </div>
+
+          <!-- Descrição -->
+          <div>
+            <label class="block text-sm font-medium mb-2">Descrição *</label>
+            <textarea
+              [(ngModel)]="novoServico.descricao"
+              placeholder="Descreva o serviço..."
+              rows="3"
+              class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground resize-none"
+            ></textarea>
+          </div>
+
+          <!-- Valor -->
+          <div>
+            <label class="block text-sm font-medium mb-2">Valor (R$) *</label>
+            <input
+              type="number"
+              [(ngModel)]="novoServico.valor"
+              placeholder="0.00"
+              min="0"
+              step="0.01"
+              class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground"
+            />
+          </div>
+
+          <!-- Imagem -->
+          <div>
+            <label class="flex items-center gap-2 mb-2 text-sm font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+                <circle cx="9" cy="9" r="2"></circle>
+                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+              </svg>
+              Imagem Ilustrativa
+            </label>
+            <div class="border-2 border-dashed rounded-lg p-4 text-center cursor-pointer hover:border-blue-600 dark:hover:border-blue-400 transition-colors">
+              <input
+                type="file"
+                accept="image/*"
+                (change)="onImagemSelecionada($event)"
+                class="hidden"
+                id="nova-imagem"
+              />
+              <label for="nova-imagem" class="cursor-pointer block">
+                @if (imagemPreview) {
+                  <img [src]="imagemPreview" alt="Preview" class="max-h-32 mx-auto rounded" />
+                } @else {
+                  <div class="py-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-2 text-muted-foreground">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="17 8 12 3 7 8"></polyline>
+                      <line x1="12" x2="12" y1="3" y2="15"></line>
+                    </svg>
+                    <p class="text-sm text-muted-foreground">Clique para escolher uma imagem</p>
+                  </div>
+                }
+              </label>
+            </div>
+          </div>
+
+          <!-- Campos Extras -->
+          <div>
+            <label class="block text-sm font-medium mb-2">Campos Extras</label>
+            <div class="flex gap-2">
+              <input
+                type="text"
+                [(ngModel)]="campoExtraTemp"
+                (keyup.enter)="adicionarCampoExtra()"
+                placeholder="Ex: Placa do veículo"
+                class="flex-1 px-4 py-2 rounded-lg border border-input bg-background text-foreground"
+              />
+              <button
+                (click)="adicionarCampoExtra()"
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 8v8"></path>
+                  <path d="M8 12h8"></path>
+                </svg>
+              </button>
+            </div>
+
+            @if (novoServico.camposExtras.length > 0) {
+              <div class="mt-3 space-y-2">
+                @for (campo of novoServico.camposExtras; track $index) {
+                  <div class="flex items-center justify-between bg-gray-100 dark:bg-gray-700 px-3 py-2 rounded">
+                    <span class="text-sm flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a10 10 0 1 0 10 10H12V2Z"></path>
+                        <path d="M12 12 2 2"></path>
+                      </svg>
+                      {{ campo }}
+                    </span>
+                    <button
+                      (click)="removerCampoExtra($index)"
+                      class="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18"></path>
+                        <path d="m6 6 12 12"></path>
+                      </svg>
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Botão Salvar -->
+          <button
+            (click)="salvarNovoServico()"
+            class="w-full flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+            Salvar Serviço
+          </button>
+        </div>
+      </div>
+
+      <!-- LISTA DE SERVIÇOS -->
+      @for (servico of servicos; track servico.id) {
+        <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-border shadow-lg">
+          <!-- Imagem -->
+          @if (servico.imagem) {
+            <div class="mb-4">
+              <img [src]="servico.imagem" [alt]="servico.nome" class="w-full h-48 object-cover rounded-lg" />
+              <div class="flex gap-2 mt-2">
+                <label class="flex-1">
+                  <button class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-input rounded-lg hover:bg-accent transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="17 8 12 3 7 8"></polyline>
+                      <line x1="12" x2="12" y1="3" y2="15"></line>
+                    </svg>
+                    Trocar Imagem
+                  </button>
+                  <input type="file" accept="image/*" (change)="onImagemServicoSelecionada($event, servico)" class="hidden" />
+                </label>
+                <button
+                  (click)="removerImagemServico(servico)"
+                  class="px-4 py-2 border border-input rounded-lg hover:bg-accent transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 6h18"></path>
+                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          } @else {
+            <div class="mb-4">
+              <label class="block">
+                <div class="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer hover:border-blue-600 dark:hover:border-blue-400 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-2 text-muted-foreground">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" x2="12" y1="3" y2="15"></line>
+                  </svg>
+                  <p class="text-sm text-muted-foreground">Adicionar Imagem</p>
+                </div>
+                <input type="file" accept="image/*" (change)="onImagemServicoSelecionada($event, servico)" class="hidden" />
+              </label>
+            </div>
+          }
+
+          <!-- Campos editáveis -->
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">Nome</label>
+              <input
+                type="text"
+                [value]="servico.nome"
+                (input)="atualizarCampoServico(servico, 'nome', $any($event.target).value)"
+                class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2">Descrição</label>
+              <textarea
+                [value]="servico.descricao"
+                (input)="atualizarCampoServico(servico, 'descricao', $any($event.target).value)"
+                rows="3"
+                class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground resize-none"
+              ></textarea>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2">Valor</label>
+              <input
+                type="number"
+                [value]="servico.valor"
+                (input)="atualizarCampoServico(servico, 'valor', converterParaNumero($any($event.target).value))"
+                min="0"
+                step="0.01"
+                class="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground"
+              />
+              <p class="text-sm text-muted-foreground mt-1">Valor atual: {{ formatarValor(servico.valor) }}</p>
+            </div>
+
+            @if (servico.camposExtras.length > 0) {
+              <div>
+                <label class="block text-sm font-medium mb-2">Campos Extras</label>
+                <div class="space-y-2 mt-2">
+                  @for (campo of servico.camposExtras; track $index) {
+                    <div class="flex items-center justify-between bg-gray-100 dark:bg-gray-700 px-3 py-2 rounded">
+                      <span class="text-sm flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M12 2a10 10 0 1 0 10 10H12V2Z"></path>
+                          <path d="M12 12 2 2"></path>
+                        </svg>
+                        {{ campo }}
+                      </span>
+                      <button
+                        (click)="removerCampoExtraServico(servico, $index)"
+                        class="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M18 6 6 18"></path>
+                          <path d="m6 6 12 12"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+
+            <!-- Botões de Ação -->
+            <div class="flex gap-2 pt-2">
+              <button
+                (click)="deletarServico(servico)"
+                class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 6h18"></path>
+                  <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                  <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                </svg>
+                Excluir
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Botão Voltar -->
+    <div class="text-center mt-8">
+      <button
+        (click)="voltar()"
+        class="inline-flex items-center gap-2 px-6 py-3 border border-input bg-background rounded-lg hover:bg-accent transition-colors"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 19-7-7 7-7"></path>
+          <path d="M19 12H5"></path>
+        </svg>
+        Voltar para Painel
+      </button>
+    </div>
+  </div>
+</div>

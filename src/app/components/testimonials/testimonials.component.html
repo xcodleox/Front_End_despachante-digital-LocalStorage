@@ -1,0 +1,22 @@
+<section class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">O que nossos clientes dizem</h2>
+    
+    <div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      @for (testimonial of testimonials; track $index) {
+        <div class="p-6 relative bg-white dark:bg-gray-800 rounded-lg border border-border shadow-lg hover:shadow-xl transition-shadow">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600 mb-4 opacity-50">
+            <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/>
+            <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/>
+          </svg>
+          <p class="text-muted-foreground text-sm md:text-base mb-4 italic leading-relaxed">
+            "{{ testimonial.text }}"
+          </p>
+          <span class="block mt-4 font-semibold text-sm">
+            - {{ testimonial.author }}
+          </span>
+        </div>
+      }
+    </div>
+  </div>
+</section>

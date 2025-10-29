@@ -1,0 +1,201 @@
+/* =================== CHAT =================== */
+
+/* Área de mensagens com scroll suave */
+.bg-gray-50.rounded-lg.p-4.mb-4.max-h-96.overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(209, 213, 219) transparent;
+}
+
+.bg-gray-50.rounded-lg.p-4.mb-4.max-h-96.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.bg-gray-50.rounded-lg.p-4.mb-4.max-h-96.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.bg-gray-50.rounded-lg.p-4.mb-4.max-h-96.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: rgb(209, 213, 219);
+  border-radius: 3px;
+}
+
+/* Mensagens do chat */
+.max-w-\[80\%\] {
+  max-width: 80%;
+}
+
+/* Animação suave para mensagens */
+.p-3.rounded-lg {
+  transition: all 0.2s ease;
+}
+
+.p-3.rounded-lg:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* =================== ARQUIVOS =================== */
+
+/* Preview de arquivos */
+.w-full.h-32.object-cover.rounded {
+  transition: transform 0.2s ease;
+}
+
+.w-full.h-32.object-cover.rounded:hover {
+  transform: scale(1.05);
+}
+
+/* =================== BADGES =================== */
+
+/* Badge de status com animação */
+.px-3.py-1.rounded-full.text-sm {
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+/* =================== BOTÕES =================== */
+
+/* Botões com hover suave */
+button {
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Botão de exclusão */
+.bg-red-600:hover {
+  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.3);
+}
+
+/* =================== CARDS =================== */
+
+/* Card principal com hover */
+.bg-white.dark\:bg-gray-800.rounded-lg.border.border-border.shadow-sm {
+  transition: all 0.3s ease;
+}
+
+.bg-white.dark\:bg-gray-800.rounded-lg.border.border-border.shadow-sm:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* =================== IMAGENS =================== */
+
+/* Imagem do serviço */
+.w-full.h-48.object-cover.rounded-lg {
+  transition: transform 0.3s ease;
+}
+
+.w-full.h-48.object-cover.rounded-lg:hover {
+  transform: scale(1.02);
+}
+
+/* =================== TEXTAREA =================== */
+
+/* Textarea do chat */
+textarea {
+  resize: vertical;
+  min-height: 75px;
+  max-height: 200px;
+}
+
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgb(59, 130, 246);
+}
+
+/* =================== SEÇÕES =================== */
+
+/* Seção de dados do formulário */
+.bg-gray-50.dark\:bg-gray-900\/50.p-4.rounded-lg {
+  border-left: 4px solid rgb(59, 130, 246);
+}
+
+/* Seção de pagamento */
+.bg-blue-50.dark\:bg-blue-900\/20.p-4.rounded-lg {
+  border-left: 4px solid rgb(37, 99, 235);
+}
+
+/* =================== RESPONSIVIDADE =================== */
+
+@media (max-width: 768px) {
+  /* Chat em mobile */
+  .max-w-\[80\%\] {
+    max-width: 90%;
+  }
+
+  /* Botões em mobile */
+  .flex.flex-wrap.gap-2 button {
+    flex: 1 1 auto;
+    min-width: 120px;
+  }
+
+  /* Imagem do serviço em mobile */
+  .w-full.h-48 {
+    height: 200px;
+  }
+}
+
+/* =================== DARK MODE =================== */
+
+@media (prefers-color-scheme: dark) {
+  /* Scrollbar em dark mode */
+  .bg-gray-50.rounded-lg.p-4.mb-4.max-h-96.overflow-y-auto {
+    scrollbar-color: rgb(55, 65, 81) transparent;
+  }
+
+  .bg-gray-50.rounded-lg.p-4.mb-4.max-h-96.overflow-y-auto::-webkit-scrollbar-thumb {
+    background-color: rgb(55, 65, 81);
+  }
+
+  /* Cards em dark mode */
+  .bg-white.dark\:bg-gray-800:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* =================== UTILITÁRIOS =================== */
+
+/* Animação de fade-in para os cards */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.space-y-6 > * {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* Scroll suave para toda a página */
+html {
+  scroll-behavior: smooth;
+}
+
+/* =================== ÍCONES =================== */
+
+/* Ícones inline com alinhamento correto */
+svg {
+  flex-shrink: 0;
+}
+
+/* Ícones com cor de destaque */
+.text-blue-600 {
+  transition: color 0.2s ease;
+}
+
+button:hover .text-blue-600,
+a:hover .text-blue-600 {
+  color: rgb(37, 99, 235);
+}

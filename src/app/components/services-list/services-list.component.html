@@ -1,0 +1,41 @@
+<section id="servicos" class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 flex items-center justify-center gap-3">
+      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600">
+        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+      Serviços disponíveis
+    </h2>
+    
+    @if (servicos.length > 0) {
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        @for (servico of servicos; track servico.id) {
+          <div class="overflow-hidden hover:shadow-xl transition-shadow bg-white dark:bg-gray-800 rounded-lg border border-border">
+            @if (servico.imagem) {
+              <div class="aspect-video overflow-hidden">
+                <img
+                  [src]="servico.imagem"
+                  [alt]="'Imagem do serviço ' + servico.nome"
+                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+            }
+            
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-3">{{ servico.nome }}</h3>
+              <p class="text-muted-foreground text-sm md:text-base mb-4 leading-relaxed">{{ servico.descricao }}</p>
+              <p class="mt-auto text-base">
+                <strong class="font-semibold">VALOR:</strong> <span class="text-blue-600 font-bold text-lg">{{ formatarValor(servico.valor) }}</span>
+              </p>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <p class="text-center text-muted-foreground text-lg py-12">
+        Nenhum serviço disponível no momento.
+      </p>
+    }
+  </div>
+</section>
