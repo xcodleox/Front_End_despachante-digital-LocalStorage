@@ -19,7 +19,6 @@ export class FloatingButtonsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Observa o estado do consentimento LGPD
     this.lgpdService.aceitouLGPD$.subscribe(aceito => {
       this.showLGPDButton = aceito;
     });

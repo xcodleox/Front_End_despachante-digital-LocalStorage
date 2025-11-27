@@ -18,7 +18,7 @@
 
     <div class="p-8 bg-white dark:bg-gray-800 rounded-lg border border-border shadow-lg">
       <form [formGroup]="formulario" (ngSubmit)="onSubmit($event)" class="space-y-6">
-        <!-- Seleção de Serviço -->
+       
         <div>
           <label class="block font-semibold mb-2">Serviço *</label>
           <select
@@ -45,7 +45,6 @@
           </div>
         }
 
-        <!-- Dados Pessoais -->
         <hr class="border-t border-border" />
         <h2 class="text-2xl font-semibold">Dados Pessoais</h2>
 
@@ -153,7 +152,6 @@
           </div>
         </div>
 
-        <!-- Pergunta de Segurança (só para novos usuários) -->
         @if (!usuarioExistente && formulario.get('email')?.value) {
           <hr class="border-t border-border" />
           <h2 class="text-2xl font-semibold">Segurança da Conta</h2>
@@ -203,7 +201,6 @@
           </div>
         }
 
-        <!-- Campos Extras -->
         @if (servicoSelecionado && servicoSelecionado.camposExtras.length > 0) {
           <hr class="border-t border-border" />
           <h2 class="text-2xl font-semibold">Informações Adicionais</h2>
@@ -226,7 +223,6 @@
           </div>
         }
 
-        <!-- Pagamento -->
         <hr class="border-t border-border" />
         <h2 class="text-2xl font-semibold">Pagamento</h2>
 
@@ -263,7 +259,6 @@
           </div>
         }
 
-        <!-- Upload de Documentos -->
         <hr class="border-t border-border" />
         <h2 class="text-2xl font-semibold">Documentos</h2>
 
@@ -280,7 +275,6 @@
           }
         </div>
 
-        <!-- Botão de Envio -->
         <button
           type="submit"
           class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition-colors"

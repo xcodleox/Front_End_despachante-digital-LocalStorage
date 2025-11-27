@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16 dark:text-white">
   <div class="container mx-auto px-4">
     <div class="max-w-6xl mx-auto">
-      <!-- Header -->
+
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
           <h1 class="text-3xl md:text-4xl font-bold">Minhas Solicitações</h1>
@@ -20,7 +20,6 @@
         </button>
       </div>
 
-      <!-- Solicitações -->
       @if (solicitacoes.length > 0) {
         <div class="grid gap-6">
           @for (solicitacao of solicitacoes; track solicitacao.id) {
@@ -58,7 +57,6 @@
                 </div>
               }
 
-              <!-- Chat da Solicitação -->
               <div class="border-t border-border my-6"></div>
               <div>
                 <h4 class="flex items-center gap-2 mb-4 text-lg">
@@ -68,7 +66,6 @@
                   Mensagens
                 </h4>
 
-                <!-- Mensagens -->
                 <div class="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4 mb-4 max-h-96 overflow-y-auto space-y-3">
                   @if (getChat(solicitacao).length === 0) {
                     <div class="text-center text-muted-foreground py-6">
@@ -122,7 +119,6 @@
                   }
                 </div>
 
-                <!-- Nova Mensagem -->
                 <div class="space-y-2">
                   <textarea
                     [(ngModel)]="chatMensagens[solicitacao.id]"

@@ -14,7 +14,6 @@
       <p class="text-muted-foreground">Gerencie todos os usuários do sistema</p>
     </div>
 
-    <!-- Botão Criar Novo Usuário -->
     <div class="mb-6">
       <button
         (click)="abrirDialogNovo()"
@@ -30,7 +29,6 @@
       </button>
     </div>
 
-    <!-- Cards de Usuários -->
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
       @for (usuario of usuarios; track usuario.id) {
         <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-border shadow-lg">
@@ -111,7 +109,6 @@
       }
     </div>
 
-    <!-- Botão Voltar -->
     <div class="text-center">
       <button
         (click)="voltar()"
@@ -127,7 +124,6 @@
   </div>
 </div>
 
-<!-- Dialog Criar Novo Usuário -->
 @if (mostrarDialogNovo) {
   <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" (click)="mostrarDialogNovo = false">
     <div class="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6" (click)="$event.stopPropagation()">
@@ -213,7 +209,6 @@
   </div>
 }
 
-<!-- Dialog Editar Usuário -->
 @if (mostrarDialogEditar) {
   <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" (click)="mostrarDialogEditar = false">
     <div class="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6" (click)="$event.stopPropagation()">
@@ -277,7 +272,6 @@
   </div>
 }
 
-<!-- Dialog Alterar Senha -->
 @if (mostrarDialogSenha) {
   <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" (click)="mostrarDialogSenha = false">
     <div class="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6" (click)="$event.stopPropagation()">

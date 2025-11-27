@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 dark:text-white">
   <div class="container mx-auto px-4">
-    <!-- Header -->
+
     <div class="mb-8">
       <h2 class="flex items-center gap-3 text-blue-600 dark:text-blue-400 mb-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -14,7 +14,7 @@
       </p>
     </div>
 
-    <!-- Estado Vazio -->
+
     @if (solicitacoes.length === 0) {
       <div class="p-12 text-center bg-white dark:bg-gray-800 rounded-lg border border-border">
         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-muted-foreground opacity-50">
@@ -25,13 +25,11 @@
       </div>
     }
 
-    <!-- Lista de Solicitações -->
     @else {
       <div class="space-y-6">
         @for (s of solicitacoes; track s.id) {
           <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow">
             
-            <!-- Header da Solicitação -->
             <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
               <div>
                 <h3 class="flex items-center gap-2 mb-2">
@@ -67,7 +65,6 @@
               </span>
             </div>
 
-            <!-- Imagem do Serviço -->
             @if (getServicoImagem(s.servicoId)) {
               <div class="mb-6">
                 <img 
@@ -78,7 +75,6 @@
               </div>
             }
 
-            <!-- E-mail do Usuário -->
             <div class="mb-6">
               <p class="flex items-center gap-2 text-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600">
@@ -89,11 +85,10 @@
               </p>
             </div>
 
-            <!-- Separador -->
+
             @if (s.dados) {
               <div class="border-t border-border my-6"></div>
 
-              <!-- Dados do Formulário -->
               <div class="bg-gray-50 dark:bg-gray-900/50 p-4 rounded-lg mb-6">
                 <h4 class="flex items-center gap-2 mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -103,7 +98,7 @@
                   Dados do Formulário
                 </h4>
                 <div class="space-y-3">
-                  <!-- Campos Simples -->
+
                   @if (s.dados.nome) {
                     <p class="text-sm"><strong>Nome:</strong> {{ s.dados.nome }}</p>
                   }
@@ -117,7 +112,7 @@
                     <p class="text-sm"><strong>Endereço:</strong> {{ s.dados.endereco }}</p>
                   }
 
-                  <!-- Campos Extras -->
+
                   @if (s.dados.camposExtras) {
                     <div class="mt-4">
                       <p class="text-sm mb-2">
@@ -145,7 +140,6 @@
                     </div>
                   }
 
-                  <!-- Arquivos -->
                   @if (s.dados.arquivos && s.dados.arquivos.length > 0) {
                     <div class="mt-4">
                       <p class="text-sm mb-2"><strong>Arquivos:</strong></p>
@@ -195,7 +189,6 @@
                     </div>
                   }
 
-                  <!-- Pagamento -->
                   @if (s.dados.pagamento) {
                     <div class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
                       <p class="text-sm mb-2">
@@ -242,7 +235,6 @@
               </div>
             }
 
-            <!-- Chat da Solicitação -->
             <div class="border-t border-border my-6"></div>
             <div>
               <h4 class="flex items-center gap-2 mb-4">
@@ -252,7 +244,6 @@
                 Chat da Solicitação
               </h4>
 
-              <!-- Mensagens -->
               <div class="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4 mb-4 max-h-96 overflow-y-auto space-y-3">
                 @for (m of getChat(s); track m.id) {
                   <div [class]="'p-3 rounded-lg ' + (m.remetente === 'admin' ? 'bg-blue-100 dark:bg-blue-900/30 ml-auto max-w-[80%]' : 'bg-white dark:bg-gray-800 mr-auto max-w-[80%] border border-border')">
@@ -298,7 +289,6 @@
                 }
               </div>
 
-              <!-- Nova Mensagem -->
               <div class="space-y-2">
                 <textarea
                   [(ngModel)]="chatMensagens[s.id]"
@@ -340,7 +330,6 @@
               </div>
             </div>
 
-            <!-- Botões de Ações -->
             <div class="border-t border-border my-6"></div>
             <div class="flex flex-wrap gap-2">
               <button
@@ -389,7 +378,6 @@
       </div>
     }
 
-    <!-- Botão Voltar -->
     <div class="text-center mt-8">
       <button
         (click)="voltar()"

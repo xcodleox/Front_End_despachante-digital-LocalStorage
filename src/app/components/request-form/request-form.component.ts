@@ -15,8 +15,6 @@ export class RequestFormComponent implements OnInit {
   servicos: Servico[] = [];
   servicoSelecionado: Servico | null = null;
   formulario!: FormGroup;
-  
-  // Estados
   pagamentoGerado = false;
   comprovanteFalso = '';
   arquivos: File[] = [];
@@ -48,7 +46,6 @@ export class RequestFormComponent implements OnInit {
     });
   }
 
-  // Validadores customizados
   validarCPF(control: AbstractControl): ValidationErrors | null {
     const cpf = control.value?.replace(/\D/g, '');
     
@@ -58,12 +55,10 @@ export class RequestFormComponent implements OnInit {
       return { cpfInvalido: true };
     }
     
-    // Verifica se todos os dígitos são iguais
     if (/^(\d)\1{10}$/.test(cpf)) {
       return { cpfInvalido: true };
     }
     
-    // Validação dos dígitos verificadores
     let soma = 0;
     let resto;
     
@@ -122,14 +117,12 @@ export class RequestFormComponent implements OnInit {
     this.pagamentoGerado = false;
     this.comprovanteFalso = '';
     
-    // Remover campos extras antigos
     Object.keys(this.formulario.controls).forEach(key => {
       if (key.startsWith('extra_')) {
         this.formulario.removeControl(key);
       }
     });
     
-    // Adicionar campos extras do novo serviço
     if (servico && servico.camposExtras.length > 0) {
       servico.camposExtras.forEach(campo => {
         this.formulario.addControl(`extra_${campo}`, this.fb.control('', Validators.required));
@@ -174,7 +167,6 @@ export class RequestFormComponent implements OnInit {
     if (email) {
       this.usuarioExistente = this.appService.verificarUsuarioExiste(email);
       
-      // Atualizar validação da pergunta de segurança baseado no usuário existente
       if (this.usuarioExistente) {
         this.formulario.get('perguntaSeguranca')?.clearValidators();
         this.formulario.get('respostaSeguranca')?.clearValidators();
@@ -190,18 +182,15 @@ export class RequestFormComponent implements OnInit {
   onSubmit(event: Event) {
     event.preventDefault();
     
-    // Marcar todos os campos como tocados para exibir erros
     Object.keys(this.formulario.controls).forEach(key => {
       this.formulario.get(key)?.markAsTouched();
     });
     
-    // Validar serviço selecionado
     if (!this.servicoSelecionado) {
       alert('Por favor, selecione um serviço!');
       return;
     }
 
-    // Validar formulário
     if (this.formulario.invalid) {
       alert('Por favor, corrija os erros do formulário antes de continuar!');
       return;
@@ -214,7 +203,6 @@ export class RequestFormComponent implements OnInit {
 
     const formValues = this.formulario.value;
     
-    // Verificar se é novo usuário e se preencheu a pergunta de segurança
     const usuarioJaExiste = this.appService.verificarUsuarioExiste(formValues.email);
     
     if (!usuarioJaExiste) {
@@ -224,12 +212,10 @@ export class RequestFormComponent implements OnInit {
       }
     }
 
-    // Gerar protocolo único
     const protocolo = `DSP${Date.now().toString().slice(-8)}${Math.random().toString(36).substring(2, 5).toUpperCase()}`;
     
     let senhaGerada = '';
     
-    // Registrar usuário se não existir
     if (!usuarioJaExiste) {
       const novoUsuario = this.appService.registrarUsuario(
         formValues.nome, 
@@ -241,7 +227,6 @@ export class RequestFormComponent implements OnInit {
       senhaGerada = novoUsuario.senha;
     }
     
-    // Formatar data
     const dataAtual = new Date().toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: '2-digit',
@@ -250,7 +235,6 @@ export class RequestFormComponent implements OnInit {
       minute: '2-digit'
     });
 
-    // Coletar campos extras
     const camposExtras: Record<string, string> = {};
     if (this.servicoSelecionado.camposExtras) {
       this.servicoSelecionado.camposExtras.forEach(campo => {
@@ -258,7 +242,6 @@ export class RequestFormComponent implements OnInit {
       });
     }
 
-    // Salvar solicitação no sistema
     const arquivosNomes = this.arquivos.map(f => f.name);
     const dadosCompletos = {
       nome: formValues.nome,
@@ -279,7 +262,6 @@ export class RequestFormComponent implements OnInit {
       arquivosNomes
     );
 
-    // Preparar dados para comprovante
     const receiptData = {
       protocolo,
       data: dataAtual,
@@ -293,11 +275,9 @@ export class RequestFormComponent implements OnInit {
       usuarioNovo: !usuarioJaExiste
     };
 
-    // Navegar para o comprovante
     this.router.navigate(['/comprovante'], { state: { data: receiptData } });
   }
 
-  // Métodos auxiliares para verificação de erros
   campoInvalido(campo: string): boolean {
     const control = this.formulario.get(campo);
     return !!(control && control.invalid && (control.dirty || control.touched));
@@ -317,7 +297,6 @@ export class RequestFormComponent implements OnInit {
     return 'Campo inválido';
   }
 
-  // Métodos de formatação para máscaras
   formatarCPF(event: Event) {
     const input = event.target as HTMLInputElement;
     let valor = input.value.replace(/\D/g, '');
@@ -353,7 +332,6 @@ export class RequestFormComponent implements OnInit {
     let valor = input.value.replace(/\D/g, '');
     
     if (valor.length <= 10) {
-      // Formata conforme o tamanho: 00.000.000-0 ou 00.000.000-00
       if (valor.length <= 9) {
         valor = valor.replace(/(\d{2})(\d)/, '$1.$2');
         valor = valor.replace(/(\d{3})(\d)/, '$1.$2');

@@ -16,8 +16,6 @@ export class UserPanelComponent implements OnInit {
   servicos: Servico[] = [];
   usuarioNome = '';
   usuarioEmail = '';
-  
-  // Estado do chat
   chatMensagens: { [key: string]: string } = {};
   arquivosSelecionados: { [key: string]: File[] } = {};
 
@@ -38,8 +36,6 @@ export class UserPanelComponent implements OnInit {
   carregarDados() {
     this.solicitacoes = this.appService.listarSolicitacoesUsuario(this.usuarioEmail);
     this.servicos = this.appService.listarServicos();
-    
-    // Popula o objeto servico em cada solicitação
     this.solicitacoes = this.solicitacoes.map(sol => ({
       ...sol,
       servico: this.servicos.find(s => s.id === sol.servicoId)
@@ -93,14 +89,9 @@ export class UserPanelComponent implements OnInit {
     }
 
     const arquivos = this.arquivosSelecionados[solicitacao.id]?.map(f => f.name) || [];
-    
-    // Envia mensagem através do AppService
-    this.appService.enviarMensagem(solicitacao.id, 'user', texto, arquivos);
-    
-    // Recarrega dados
-    this.carregarDados();
 
-    // Limpa campos
+    this.appService.enviarMensagem(solicitacao.id, 'user', texto, arquivos);
+    this.carregarDados();
     this.chatMensagens[solicitacao.id] = '';
     this.arquivosSelecionados[solicitacao.id] = [];
     alert('Mensagem enviada!');

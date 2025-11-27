@@ -1,5 +1,5 @@
 <div class="relative overflow-hidden rounded-lg shadow-xl group">
-  <!-- Slides -->
+
   <div class="relative aspect-[16/9] md:aspect-[21/9]">
     @for (slide of slides; track $index) {
       <div
@@ -21,7 +21,6 @@
     }
   </div>
 
-  <!-- Navigation Arrows -->
   <button
     (click)="prevSlide()"
     class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity"

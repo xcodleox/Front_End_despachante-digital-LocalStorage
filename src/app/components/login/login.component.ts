@@ -43,7 +43,6 @@ export class LoginComponent {
     event.preventDefault();
     this.erro = '';
 
-    // Validações básicas
     if (!this.email || !this.senha) {
       this.erro = 'Por favor, preencha todos os campos.';
       return;
@@ -59,16 +58,13 @@ export class LoginComponent {
       return;
     }
 
-    // Realizar login usando o serviço
     const usuario = this.appService.login(this.email, this.senha);
     
     if (usuario && usuario.tipo === this.tipoLogin) {
-      // Limpar formulário
       this.email = '';
       this.senha = '';
       this.erro = '';
       
-      // Redirecionar
       if (this.tipoLogin === 'admin') {
         this.router.navigate(['/admin']);
       } else {
