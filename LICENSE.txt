@@ -1,2 +1,21 @@
-429: Too Many Requests
-For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service).
+LICENÇA DE USO DE SOFTWARE E PROPRIEDADE INTELECTUAL
+
+Copyright (c) 2025 LEANDRO VIANNA DE ALENCAR NEVES
+
+TODOS OS DIREITOS RESERVADOS.
+
+1. DECLARAÇÃO DE AUTORIA
+Este software, incluindo seu código-fonte, estrutura de banco de dados, design de interface e lógica de programação, é obra original e propriedade intelectual exclusiva de LEANDRO VIANNA DE ALENCAR NEVES.
+
+2. PERMISSÃO RESTRITA PARA AVALIAÇÃO ACADÊMICA
+A concessão de acesso a este código destina-se estritamente à avaliação acadêmica por parte da banca examinadora e corpo docente da SENAI CIMATEC, no contexto do Trabalho de Conclusão de Curso (TCC) do autor.
+
+3. RESTRIÇÕES DE USO (PROIBIÇÕES)
+Exceto quando expressamente autorizado por escrito pelo autor, é estritamente PROIBIDO:
+   a) Copiar, reproduzir, distribuir, publicar ou transmitir qualquer parte deste software;
+   b) Utilizar este software, total ou parcialmente, para quaisquer fins comerciais, lucrativos ou de negócios;
+   c) Modificar, adaptar, traduzir, fazer engenharia reversa, descompilar ou desmontar o software;
+   d) Remover ou alterar qualquer aviso de direito autoral ou marca registrada.
+
+4. LEGISLAÇÃO APLICÁVEL
+O desrespeito a estes termos constitui violação dos direitos de propriedade intelectual, protegido pela Lei de Direitos Autorais (Lei nº 9.610/98) e pela Lei de Software (Lei nº 9.609/98).
