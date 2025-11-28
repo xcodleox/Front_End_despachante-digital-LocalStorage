@@ -53,18 +53,9 @@ export class AppService {
   constructor(private router: Router) {
     this.criarAdminPadrao();
     this.criarServicosPadrao();
-    
-    // Debug: Listar usuários criados
-    console.log('=== USUÁRIOS CADASTRADOS ===');
+
     const usuarios = this.listarUsuarios();
-    usuarios.forEach(u => {
-      console.log(`Nome: ${u.nome}`);
-      console.log(`Email: ${u.email}`);
-      console.log(`Senha: ${u.senha}`);
-      console.log(`Tipo: ${u.tipo}`);
-      console.log('---');
-    });
-    console.log('========================');
+     usuarios.forEach(u => {});
   }
 
   // ============================== CHAT ===================

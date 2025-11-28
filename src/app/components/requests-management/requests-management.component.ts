@@ -29,6 +29,7 @@ export class RequestsManagementComponent implements OnInit {
   
   chatMensagens: { [key: string]: string } = {};
   arquivosSelecionados: { [key: string]: File[] } = {};
+  enviandoMensagem = false; // Controle de loading
 
   constructor(
     private appService: AppService,
@@ -112,34 +113,61 @@ export class RequestsManagementComponent implements OnInit {
     
     if (files && files.length > 0) {
       this.arquivosSelecionados[solicitacao.id] = Array.from(files);
-      alert(`${files.length} arquivo(s) selecionado(s)`);
     }
-  }
-
-  enviarMensagem(solicitacao: Solicitacao) {
-    const texto = this.chatMensagens[solicitacao.id];
-    
-    if (!texto || texto.trim() === '') {
-      alert('Digite uma mensagem!');
-      return;
-    }
-
-    const arquivos = this.arquivosSelecionados[solicitacao.id]?.map(f => f.name) || [];
-    
-    // Envia mensagem através do AppService
-    this.appService.enviarMensagem(solicitacao.id, 'admin', texto, arquivos);
-    
-    // Recarrega dados
-    this.carregarDados();
-
-    // Limpa campos
-    this.chatMensagens[solicitacao.id] = '';
-    this.arquivosSelecionados[solicitacao.id] = [];
-    alert('Mensagem enviada!');
   }
 
   getArquivosSelecionadosCount(solicitacaoId: number): number {
     return this.arquivosSelecionados[solicitacaoId]?.length || 0;
+  }
+
+  // Verifica se a string base64 é uma imagem (com segurança contra null/undefined)
+  isImagem(arquivo: any): boolean {
+    if (!arquivo || typeof arquivo !== 'string') return false;
+    return arquivo.startsWith('data:image');
+  }
+
+  // Helper para converter File para Base64
+  private converterParaBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  }
+
+  async enviarMensagem(solicitacao: Solicitacao) {
+    const texto = this.chatMensagens[solicitacao.id];
+    const arquivosFiles = this.arquivosSelecionados[solicitacao.id] || [];
+    
+    if ((!texto || texto.trim() === '') && arquivosFiles.length === 0) {
+      alert('Digite uma mensagem ou anexe um arquivo!');
+      return;
+    }
+
+    this.enviandoMensagem = true;
+
+    try {
+      // 1. Converter arquivos selecionados para Base64
+      const arquivosBase64: string[] = await Promise.all(
+        arquivosFiles.map(file => this.converterParaBase64(file))
+      );
+
+      // 2. Enviar mensagem (Admin)
+      this.appService.enviarMensagem(solicitacao.id, 'admin', texto || '', arquivosBase64);
+      
+      // 3. Atualizar UI
+      this.carregarDados();
+      this.chatMensagens[solicitacao.id] = '';
+      this.arquivosSelecionados[solicitacao.id] = [];
+      alert('Mensagem enviada!');
+      
+    } catch (error) {
+      console.error('Erro ao enviar mensagem:', error);
+      alert('Erro ao processar arquivos.');
+    } finally {
+      this.enviandoMensagem = false;
+    }
   }
 
   // =================== NAVEGAÇÃO ===================

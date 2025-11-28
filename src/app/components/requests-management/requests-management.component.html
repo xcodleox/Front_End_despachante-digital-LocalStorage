@@ -2,7 +2,7 @@
   <div class="container mx-auto px-4">
 
     <div class="mb-8">
-      <h2 class="flex items-center gap-3 text-blue-600 dark:text-blue-400 mb-2">
+      <h2 class="flex items-center gap-3 text-blue-600 dark:text-blue-400 mb-2 text-2xl font-bold">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
           <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
@@ -30,9 +30,10 @@
         @for (s of solicitacoes; track s.id) {
           <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow">
             
+            <!-- Cabeçalho do Card -->
             <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
               <div>
-                <h3 class="flex items-center gap-2 mb-2">
+                <h3 class="flex items-center gap-2 mb-2 text-xl font-semibold">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600">
                     <path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"></path>
                     <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
@@ -65,6 +66,7 @@
               </span>
             </div>
 
+            <!-- Imagem do Serviço (Thumb) -->
             @if (getServicoImagem(s.servicoId)) {
               <div class="mb-6">
                 <img 
@@ -90,7 +92,7 @@
               <div class="border-t border-border my-6"></div>
 
               <div class="bg-gray-50 dark:bg-gray-900/50 p-4 rounded-lg mb-6">
-                <h4 class="flex items-center gap-2 mb-4">
+                <h4 class="flex items-center gap-2 mb-4 font-semibold">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
                     <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
@@ -140,9 +142,10 @@
                     </div>
                   }
 
+                  <!-- Arquivos do Formulário Inicial (Diferente do Chat) -->
                   @if (s.dados.arquivos && s.dados.arquivos.length > 0) {
                     <div class="mt-4">
-                      <p class="text-sm mb-2"><strong>Arquivos:</strong></p>
+                      <p class="text-sm mb-2"><strong>Arquivos Iniciais:</strong></p>
                       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         @for (arq of s.dados.arquivos; track arq.nome) {
                           <div class="border border-border rounded-lg p-3 bg-white dark:bg-gray-800 space-y-2">
@@ -169,18 +172,6 @@
                                   <line x1="10" x2="21" y1="14" y2="3"></line>
                                 </svg>
                                 Abrir
-                              </a>
-                              <a 
-                                [href]="arq.url" 
-                                download
-                                class="flex-1 px-3 py-2 text-sm border border-border bg-background rounded-md hover:bg-accent transition-colors flex items-center justify-center gap-2"
-                              >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                  <polyline points="7 10 12 15 17 10"></polyline>
-                                  <line x1="12" x2="12" y1="15" y2="3"></line>
-                                </svg>
-                                Baixar
                               </a>
                             </div>
                           </div>
@@ -237,48 +228,70 @@
 
             <div class="border-t border-border my-6"></div>
             <div>
-              <h4 class="flex items-center gap-2 mb-4">
+              <h4 class="flex items-center gap-2 mb-4 font-semibold">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
                 </svg>
                 Chat da Solicitação
               </h4>
 
-              <div class="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4 mb-4 max-h-96 overflow-y-auto space-y-3">
+              <!-- Área de Chat Atualizada -->
+              <div class="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4 mb-4 max-h-96 overflow-y-auto space-y-3 border border-border">
+                @if (getChat(s).length === 0) {
+                  <p class="text-center text-muted-foreground text-sm py-4">Nenhuma mensagem trocada.</p>
+                }
+                
                 @for (m of getChat(s); track m.id) {
-                  <div [class]="'p-3 rounded-lg ' + (m.remetente === 'admin' ? 'bg-blue-100 dark:bg-blue-900/30 ml-auto max-w-[80%]' : 'bg-white dark:bg-gray-800 mr-auto max-w-[80%] border border-border')">
+                  <div [class]="'p-3 rounded-lg flex flex-col ' + (m.remetente === 'admin' ? 'bg-blue-100 dark:bg-blue-900/30 ml-auto max-w-[80%] items-end' : 'bg-white dark:bg-gray-800 mr-auto max-w-[80%] border border-border items-start')">
+                    
                     <div class="flex items-center gap-2 mb-1">
                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600">
                         <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                       </svg>
-                      <span class="text-xs font-medium">
+                      <span class="text-xs font-bold text-gray-700 dark:text-gray-300">
                         {{ m.remetente === 'admin' ? 'Administrador' : 'Usuário' }}
                       </span>
                     </div>
-                    <p class="text-sm mb-1">{{ m.texto }}</p>
+
+                    <p class="text-sm mb-1 whitespace-pre-wrap text-gray-800 dark:text-gray-100">{{ m.texto }}</p>
+                    
                     @if (m.arquivos && m.arquivos.length > 0) {
-                      <div class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
-                        <p class="text-xs flex items-center gap-1 mb-1">
+                      <div class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-600/50 w-full">
+                        <p class="text-xs flex items-center gap-1 mb-1 opacity-70 text-gray-600 dark:text-gray-400">
                           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
                           </svg>
-                          Arquivos:
+                          Anexos:
                         </p>
-                        <div class="flex flex-wrap gap-2">
+                        <div class="flex flex-col gap-2">
                           @for (arq of m.arquivos; track arq) {
-                            <a href="#" class="text-xs text-blue-600 hover:underline flex items-center gap-1" target="_blank" rel="noopener noreferrer">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
-                                <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
-                              </svg>
-                              {{ arq }}
-                            </a>
+                            @if (isImagem(arq)) {
+                              <!-- Preview de Imagem no Admin -->
+                              <a [href]="arq" target="_blank" class="block group relative overflow-hidden rounded-lg border border-black/10 dark:border-white/10 max-w-sm cursor-pointer bg-gray-100 dark:bg-gray-900">
+                                <img [src]="arq" class="w-full h-auto max-h-48 object-cover transition-transform duration-300 group-hover:scale-105" alt="Imagem anexada">
+                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                                  <span class="opacity-0 group-hover:opacity-100 bg-black/70 text-white text-xs px-3 py-1.5 rounded-full font-medium transform translate-y-2 group-hover:translate-y-0 transition-all">
+                                    Abrir
+                                  </span>
+                                </div>
+                              </a>
+                            } @else if (arq) {
+                              <!-- Arquivo Genérico -->
+                              <span class="text-xs text-blue-600 dark:text-blue-400 flex items-center gap-1 bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded w-fit border border-blue-100 dark:border-blue-800">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
+                                  <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+                                </svg>
+                                {{ arq.length > 30 ? (arq | slice:0:30) + '...' : arq }}
+                              </span>
+                            }
                           }
                         </div>
                       </div>
                     }
-                    <small class="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+
+                    <small class="text-[10px] text-gray-500 dark:text-gray-400 flex items-center gap-1 mt-1">
                       <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"></circle>
                         <polyline points="12 6 12 12 16 14"></polyline>
@@ -289,44 +302,58 @@
                 }
               </div>
 
+              <!-- Input Area -->
               <div class="space-y-2">
                 <textarea
                   [(ngModel)]="chatMensagens[s.id]"
-                  placeholder="Digite sua mensagem..."
+                  placeholder="Responder usuário..."
                   rows="3"
                   class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800"
+                  (keydown.enter)="$event.preventDefault(); enviarMensagem(s)"
                 ></textarea>
-                <div class="flex flex-wrap gap-2">
-                  <label class="flex-1 cursor-pointer">
-                    <span class="inline-flex items-center justify-center gap-2 w-full px-4 py-2 border border-border bg-background rounded-md hover:bg-accent transition-colors">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
-                      </svg>
-                      Anexar Arquivo
-                    </span>
-                    <input
-                      type="file"
-                      multiple
-                      class="hidden"
-                      (change)="selecionarArquivo($event, s)"
-                    />
-                  </label>
+                <div class="flex flex-wrap gap-2 justify-between items-center">
+                  <div class="flex gap-2">
+                    <label class="cursor-pointer">
+                      <span class="inline-flex items-center justify-center gap-2 px-4 py-2 border border-border bg-background rounded-md hover:bg-accent transition-colors text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                        </svg>
+                        Anexar
+                      </span>
+                      <input
+                        type="file"
+                        multiple
+                        accept="image/*,application/pdf"
+                        class="hidden"
+                        (change)="selecionarArquivo($event, s)"
+                      />
+                    </label>
+                    @if (getArquivosSelecionadosCount(s.id) > 0) {
+                      <span class="text-xs bg-blue-100 text-blue-800 px-3 py-2 rounded-lg flex items-center">
+                        {{ getArquivosSelecionadosCount(s.id) }} arquivo(s)
+                      </span>
+                    }
+                  </div>
+
                   <button
                     (click)="enviarMensagem(s)"
-                    class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors flex items-center gap-2"
+                    [disabled]="enviandoMensagem"
+                    class="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-md transition-colors flex items-center gap-2 text-sm font-medium"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="m22 2-7 20-4-9-9-4Z"></path>
-                      <path d="M22 2 11 13"></path>
-                    </svg>
+                    @if (enviandoMensagem) {
+                      <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    } @else {
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m22 2-7 20-4-9-9-4Z"></path>
+                        <path d="M22 2 11 13"></path>
+                      </svg>
+                    }
                     Enviar
                   </button>
                 </div>
-                @if (getArquivosSelecionadosCount(s.id) > 0) {
-                  <div class="text-sm text-muted-foreground">
-                    {{ getArquivosSelecionadosCount(s.id) }} arquivo(s) selecionado(s)
-                  </div>
-                }
               </div>
             </div>
 
