@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppService, Servico } from '../../services/app.service';
+import { AppService } from '../../services/app.service';
+import { Servico } from '../../interfaces/padrão';
 
 @Component({
   selector: 'app-services-list',

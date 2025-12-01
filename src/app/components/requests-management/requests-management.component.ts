@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AppService, Solicitacao, Servico, Mensagem } from '../../services/app.service';
+import { AppService } from '../../services/app.service';
+import { Mensagem, Servico, Solicitacao } from '../../interfaces/padrão';
 
 // =================== INTERFACES AUXILIARES ===================
 
