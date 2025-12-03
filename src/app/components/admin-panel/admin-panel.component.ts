@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { AppService } from '../../services/app.service';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { NotificationService } from '../../services/notificaçoes.service';
 
 @Component({
   selector: 'app-admin-panel',
@@ -22,7 +23,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   constructor(
     private appService: AppService,
-    private router: Router
+    private router: Router,
+    private notify: NotificationService
   ) {}
 
   ngOnInit() {
@@ -68,6 +70,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   logout() {
     this.appService.logout();
+    this.notify.logoutSuccess()
     this.router.navigate(['/login']);
   }
 }

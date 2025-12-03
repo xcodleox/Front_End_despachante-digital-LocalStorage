@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AppService } from '../../services/app.service';
 import { Usuario } from '../../interfaces/padrão';
+import { NotificationService } from '../../services/notificaçoes.service';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +20,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private appService: AppService
+    private appService: AppService,
+    private notify: NotificationService
   ) {}
 
   ngOnInit() {
@@ -52,6 +54,8 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.appService.logout();
+    this.notify.logoutSuccess()
+    this.router.navigate(['/login'])
     this.showUserMenu = false;
   }
 

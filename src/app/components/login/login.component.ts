@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppService } from '../../services/app.service';
+import { NotificationService } from '../../services/notificaçoes.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,8 @@ export class LoginComponent {
 
   constructor(
     private appService: AppService,
-    private router: Router
+    private router: Router,
+    private notify: NotificationService
   ) {}
 
   toggleSenha() {
@@ -66,12 +68,15 @@ export class LoginComponent {
       this.erro = '';
       
       if (this.tipoLogin === 'admin') {
+        this.notify.loginSuccess()
         this.router.navigate(['/admin']);
       } else {
+        this.notify.loginSuccess()
         this.router.navigate(['/usuario']);
       }
     } else {
       this.erro = 'E-mail ou senha incorretos, ou tipo de usuário inválido.';
+      this.notify.loginError()
     }
   }
 
