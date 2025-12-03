@@ -7,16 +7,14 @@ import { adminGuard } from './guards/admin.guard';
 export const routes: Routes = [
   { 
     path: '', 
-    component: HomeComponent,
+    component: HomeComponent, // dexei pra carregar o componente junto com site
     title: 'DespachanteDigital - Início'
   },
   { 
     path: 'servicos', 
-    component: ServicesListComponent,
+    component: ServicesListComponent,// dexei pra carregar o componente junto com site
     title: 'Serviços - DespachanteDigital'
   },
-  
-  // Rotas públicas
   {
     path: 'sobre',
     loadComponent: () => import('./components/about/about.component').then(m => m.AboutComponent),
@@ -42,8 +40,6 @@ export const routes: Routes = [
     loadComponent: () => import('./components/login/login.component').then(m => m.LoginComponent),
     title: 'Login - DespachanteDigital'
   },
-  
-  // Rotas públicas de solicitação (não requerem login)
   {
     path: 'solicitacoes',
     loadComponent: () => import('./components/request-form/request-form.component').then(m => m.RequestFormComponent),
@@ -55,15 +51,12 @@ export const routes: Routes = [
     title: 'Comprovante - DespachanteDigital'
   },
   
-  // Rotas protegidas - Requerem autenticação (authGuard)
   {
     path: 'usuario',
     loadComponent: () => import('./components/user-panel/user-panel.component').then(m => m.UserPanelComponent),
     canActivate: [authGuard],
     title: 'Minhas Solicitações - DespachanteDigital'
   },
-  
-  // Rotas administrativas - Requerem ser admin (adminGuard)
   {
     path: 'admin',
     loadComponent: () => import('./components/admin-panel/admin-panel.component').then(m => m.AdminPanelComponent),
@@ -89,7 +82,7 @@ export const routes: Routes = [
     title: 'Gerenciar Usuários - DespachanteDigital'
   },
   
-  // Rota 404 - Redireciona para home
+  // Rota 404
   { 
     path: '**', 
     redirectTo: '' 
